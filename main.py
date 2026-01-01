@@ -6,29 +6,37 @@ pdf.set_auto_page_break(auto=False, margin=0)
 
 df = pd.read_csv("topics.csv")
 
+
 for index, row in df.iterrows():
+    # ---- FIRST PAGE ----
     pdf.add_page()
 
-    # Set the header
-    pdf.set_font(family="Times", style="B", size=24)
+    # Header
+    pdf.set_font("Times", "B", 24)
     pdf.set_text_color(100, 100, 100)
-    pdf.cell(w=0, h=12, txt=row["Topic"], align="L",
-         ln=1)
-    pdf.line(10,21, 200, 21)
+    pdf.cell(0, 12, row["Topic"], align="L",
+             ln=1)
 
-    # Set the footer
+    for y in range(20, 298, 10):
+        pdf.line(10, y, 200, y)
+
+    # Footer
     pdf.ln(265)
-    pdf.set_font(family="Times", style="I", size=8)
+    pdf.set_font(f"Times", "I", 8)
     pdf.set_text_color(180, 180, 180)
-    pdf.cell(w=0, h=10, txt=row["Topic"], align="R")
+    pdf.cell(0, 10, row["Topic"], align="R")
 
+    #ADDITIONAL PAGES
     for i in range(row["Pages"] -1):
         pdf.add_page()
 
-        # Set the footer
+        # Footer
         pdf.ln(277)
-        pdf.set_font(family="Times", style="I", size=8)
+        pdf.set_font("Times", "I", 8)
         pdf.set_text_color(180, 180, 180)
-        pdf.cell(w=0, h=10, txt=row["Topic"], align="R")
+        pdf.cell(0, 10, row["Topic"], align="R")
+
+        for y in range(20, 298, 10):
+            pdf.line(10, y, 200, y)
 
 pdf.output("output.pdf")
